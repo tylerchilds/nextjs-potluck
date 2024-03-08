@@ -1,6 +1,10 @@
 import Head from 'next/head';
 import { Component, Fragment } from 'react';
 import axios from 'axios';
+import Gun from 'gun/gun';
+
+const gun = Gun(['https://gun.1998.social/gun', 'https://try.axe.eco/gun']);
+const players = gun.get('players2')
 
 export default class CreatePlayer extends Component {
   constructor(props) {
@@ -30,6 +34,8 @@ export default class CreatePlayer extends Component {
     const user = {
       name: this.state.name,
     };
+
+    players.get(user.name).put(user)
 
     await axios
       .post('/api/players', user)

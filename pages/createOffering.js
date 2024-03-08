@@ -4,6 +4,10 @@ import Script from 'next/script';
 import axios from 'axios';
 import PhotoPreview from '../components/PhotoPreview';
 
+import Gun from 'gun/gun';
+
+const gun = Gun(['https://gun.1998.social/gun', 'https://try.axe.eco/gun']);
+
 // TODO:  Add feedback after done creating offering. Where to go afterwards?
 //        Can send user to blank form to create another offering,
 //        or send them to the list??? Need advice
@@ -67,23 +71,15 @@ export default class CreateOffering extends Component {
 
   async componentDidMount() {
     this.setupWidget();
-    await axios
-      .get('/api/players')
-      .then((response) => {
-        if (response.data.length > 0) {
-          this.setState({
-            players: response.data.map((player) => {
-              return { name: player.name, _id: player._id };
-            }),
-            playerName:
-              localStorage.getItem('playerName') || response.data[0].name,
-            playerId: localStorage.getItem('playerId') || response.data[0]._id,
-          });
-        }
+    const players = gun.get('players2').once(data => {
+      this.setState({
+         players: Object.keys(data).map((name) => {
+            return { name, _id: name };
+          }),
+          playerName: localStorage.getItem('playerName') || response.data[0].name,
+          playerId: localStorage.getItem('playerId') || response.data[0]._id,
       })
-      .catch((error) => {
-        console.log(error.response);
-      });
+    })
   }
 
   onChangePlayerName(e) {

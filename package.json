@@ -12,6 +12,7 @@
     "@zendeskgarden/react-theming": "^8.32.2",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "gun": "^0.2020.1239",
     "mongodb": "^3.6.4",
     "mongoose": "^5.10.11",
     "next": "^11.0",
